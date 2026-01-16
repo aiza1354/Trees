@@ -1,0 +1,134 @@
+public class ArrayTree {
+    private int[] data;
+    private int[] leftChild;
+    private int[] rightChild;
+    private int capacity;
+    private int nodeCount;
+    private int rootIndex;
+
+    public ArrayTree(int capacity) {
+        this.capacity = capacity;
+        this.data = new int [capacity];
+        this.leftChild = new int [capacity];
+        this.rightChild = new int [capacity];
+        // array is a fixed-length data structure, so we must put the size at the beginning. Hence why it is in the constructor
+        this.nodeCount = 0;
+        this.rootIndex = 1;
+
+        for (int i = 0; i < capacity; i++) {
+            leftChild[i] = -1;
+            rightChild[i] = -1;
+
+        }
+
+    }
+
+    public int addNode(int value) {
+        if (nodeCount >= capacity) {
+            System.out.println("Tree is full!");
+            return -1;
+        }
+
+        int newIndex = nodeCount;
+        data [newIndex] = value;
+        nodeCount++;
+        return newIndex;
+
+
+    }
+    public void setRoot(int index) {
+        rootIndex = index;
+    }
+
+    public void setLeftChild(int parentIndex, int childIndex) {
+        if (parentIndex >= 0 && parentIndex < nodeCount) {
+            leftChild[parentIndex] = childIndex;
+        }
+
+    }
+
+    public void setRightChild(int parentIndex, int childIndex){
+        if (parentIndex >= 0 && parentIndex < nodeCount) {
+            rightChild[parentIndex] = childIndex;
+        }
+    }
+    // reach base cas add print line
+    public void inOrder(int index){
+        if (index == -1) {
+            System.out.println("Base case has been reached!!");
+            return;
+
+        }
+        inOrder(leftChild[index]);
+        System.out.println(data[index]);
+        inOrder(rightChild[index]);
+    }
+
+    public void preOrder(int index){
+        if (index == -1) {
+            System.out.println("Reached base case!! ");
+            return;
+        }
+        System.out.println(data[index] + " ");
+        preOrder(leftChild[index]);
+        preOrder(rightChild[index]);
+
+
+    }
+
+    public void postOrder(int index){
+        if (index == -1) {
+            return;
+        }
+
+        postOrder(leftChild[index]);
+        postOrder(rightChild[index]);
+        System.out.println(data[index]);
+    }
+    public int getRoot() {
+        return rootIndex;
+    }
+
+    public static void main (String [] args){
+        ArrayTree tree = new ArrayTree(10);
+
+        // add all the nodes.
+        int node1 = tree.addNode(1);
+        int node2 = tree.addNode(2);
+        int node3 = tree.addNode(3);
+        int node4 = tree.addNode(4);
+        int node5 = tree.addNode(5);
+        int node6 = tree.addNode(6);
+
+        tree.setRoot(node1);
+        tree.setLeftChild(node1, node2);
+        tree.setRightChild(node1, node3);
+        tree.setLeftChild(node2, node4);
+        tree.setRightChild(node2, node5);
+        tree.setRightChild(node3, node6);
+
+        System.out.println("In-order");
+        tree.inOrder(tree.getRoot());
+        System.out.println();
+
+        System.out.println("Pre-order");
+        tree.preOrder(tree.getRoot());
+        System.out.println();
+
+        System.out.println("Post-order");
+        tree.postOrder(tree.getRoot());
+        System.out.println();
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
